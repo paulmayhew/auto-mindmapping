@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./styles.css";
+import "./index.css";
 import Mermaid from "./Mermaid";
 
 function MindmappingTab({ prompt, setPrompt, result, setResult, callOpenAi }) {
