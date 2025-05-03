@@ -3,35 +3,43 @@
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 222 42% 38%;      /* #3e498c: Navy Blue */
-    --foreground: 55 82% 85%;       /* #f7f2b7: Cream */
+    :root {
+        --background: 222 42% 38%;      /* #3e498c: Navy Blue */
+        --foreground: 55 82% 85%;       /* #f7f2b7: Cream */
 
-    --card: 222 42% 45%;            /* Slightly lighter Navy Blue */
-    --card-foreground: 55 82% 85%;  /* #f7f2b7: Cream */
+        --card: 222 42% 45%;            /* Slightly lighter Navy Blue */
+        --card-foreground: 55 82% 85%;  /* #f7f2b7: Cream */
 
-    --popover: 222 42% 38%;         /* #3e498c: Navy Blue */
-    --popover-foreground: 55 82% 85%; /* #f7f2b7: Cream */
+        --popover: 222 42% 38%;         /* #3e498c: Navy Blue */
+        --popover-foreground: 55 82% 85%; /* #f7f2b7: Cream */
 
-    --primary: 0 57% 32%;           /* #772a2a: Deep Red */
-    --primary-foreground: 55 82% 85%; /* #f7f2b7: Cream */
+        --primary: 0 57% 32%;           /* #772a2a: Deep Red */
+        --primary-foreground: 55 82% 85%; /* #f7f2b7: Cream */
 
-    --secondary: 0 64% 57%;         /* #e53e3d: Bright Red */
-    --secondary-foreground: 55 82% 85%; /* #f7f2b7: Cream */
+        --secondary: 0 64% 57%;         /* #e53e3d: Bright Red */
+        --secondary-foreground: 55 82% 85%; /* #f7f2b7: Cream */
 
-    --muted: 222 42% 20%;           /* Darker Navy Blue for muted elements */
-    --muted-foreground: 55 82% 70%; /* Slightly darker Cream */
+        --muted: 222 42% 20%;           /* Darker Navy Blue for muted elements */
+        --muted-foreground: 55 82% 70%; /* Slightly darker Cream */
 
-    --accent: 203 99% 37%;          /* #0176b9: Bright Blue */
-    --accent-foreground: 55 82% 85%; /* #f7f2b7: Cream */
+        --accent: 203 99% 37%;          /* #0176b9: Bright Blue */
+        --accent-foreground: 55 82% 85%; /* #f7f2b7: Cream */
 
-    --destructive: 0 64% 57%;       /* #e53e3d: Bright Red */
-    --destructive-foreground: 55 82% 85%; /* #f7f2b7: Cream */
+        --destructive: 0 64% 57%;       /* #e53e3d: Bright Red */
+        --destructive-foreground: 55 82% 85%; /* #f7f2b7: Cream */
 
-    --border: 222 42% 30%;          /* Darker Navy Blue for borders */
-    --input: 222 42% 30%;           /* Darker Navy Blue for inputs */
-    --ring: 203 99% 37%;            /* #0176b9: Bright Blue */
+        --border: 222 42% 30%;          /* Darker Navy Blue for borders */
+        --input: 222 42% 30%;           /* Darker Navy Blue for inputs */
+        --ring: 203 99% 37%;            /* #0176b9: Bright Blue */
 
-    --radius: 0.5rem;
-  }
+        --radius: 0.5rem;
+    }
+
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
 }

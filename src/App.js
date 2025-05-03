@@ -1,50 +1,83 @@
-import React, { useState, useEffect } from "react";
+import React, {useState} from "react";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
+import {Button} from "@/components/ui/button";
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label";
+import {Textarea} from "@/components/ui/textarea";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Braces, ChevronRight, Settings} from "lucide-react";
 import "./index.css";
 import Mermaid from "./Mermaid";
 
-function MindmappingTab({ prompt, setPrompt, result, setResult, callOpenAi }) {
+function MindmappingTab({prompt, setPrompt, result, setResult, callOpenAi}) {
   return (
-    <div className="App">
-      <div className="outer">
-        <div>
-          <div>Prompt</div>
-          <div className="textarea">
-            <textarea
-              id="prompt"
-              name="prompt"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-            ></textarea>
-          </div>
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="shadow-md">
+            <CardHeader>
+              <CardTitle>Prompt</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Textarea
+                  id="prompt"
+                  className="min-h-32"
+                  placeholder="Enter your mindmap prompt here..."
+                  value={prompt}
+                  onChange={(e) => setPrompt(e.target.value)}
+              />
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-md">
+            <CardHeader>
+              <CardTitle>Output</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Textarea
+                  className="min-h-32"
+                  value={result}
+                  onChange={(e) => setResult(e.target.value)}
+                  placeholder="Mermaid code output will appear here..."
+              />
+            </CardContent>
+          </Card>
         </div>
-        <div>
-          <div>Output</div>
-          <div className="textarea">
-            <textarea
-              value={result}
-              onChange={(e) => setResult(e.target.value)}
-            ></textarea>
-          </div>
-        </div>
+
+        <Button
+            onClick={callOpenAi}
+            className="w-full md:w-auto flex items-center justify-center"
+            size="lg"
+        >
+          Generate Mindmap <ChevronRight className="ml-2 h-4 w-4"/>
+        </Button>
+
+        <Card className="shadow-md">
+          <CardHeader>
+            <CardTitle>Mindmap Preview</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="p-4 bg-white rounded-md dark:bg-slate-900">
+              <Mermaid key={result ? result.length : 0} chart={result}/>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      <button onClick={() => callOpenAi()}>Create</button>
-      <Mermaid key={result ? result.length : 0} chart={result} />
-    </div>
   );
 }
 
 function SettingsTab({
-  token,
-  setToken,
-  model,
-  setModel,
-  promptTemplate,
-  setPromptTemplate,
-  maxTokens,
-  setMaxTokens,
-  temperature,
-  setTemperature,
-}) {
+                       token,
+                       setToken,
+                       model,
+                       setModel,
+                       promptTemplate,
+                       setPromptTemplate,
+                       maxTokens,
+                       setMaxTokens,
+                       temperature,
+                       setTemperature,
+                     }) {
   const [localTemperature, setLocalTemperature] = useState(String(temperature));
 
   const handlePromptTemplateChange = (e) => {
@@ -101,91 +134,102 @@ function SettingsTab({
   };
 
   return (
-    <div>
-      <div>OpenAI Token</div>
-      <div>
-        <input
-          type="password"
-          id="token"
-          name="token"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor="model">Model:</label>
-        <select
-          name="model"
-          id="model"
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
-        >
-          <option value="gpt-4o-mini">gpt-4o-mini</option>
-          <option value="gpt-4o">gpt-4o</option>
-          <option value="gpt-4-turbo">gpt-4-turbo</option>
-          <option value="gpt-4">gpt-4</option>
-          <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-          <option value="gpt-4o-2024-08-06">gpt-4o-2024-08-06</option>
-          <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-          <option value="chatgpt-4o-latest">chatgpt-4o-latest</option>
-        </select>
-      </div>
+      <Card className="shadow-md">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Settings className="mr-2 h-5 w-5"/> API Settings
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="token">OpenAI API Key</Label>
+            <Input
+                type="password"
+                id="token"
+                name="token"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                placeholder="Enter your OpenAI API key"
+            />
+          </div>
 
-      <div>
-        <label htmlFor="maxTokens">max tokens:</label>
-        <input
-          type="text"
-          id="maxTokens"
-          name="maxTokens"
-          value={maxTokens}
-          onChange={handleMaxTokensChange}
-        />
-      </div>
+          <div className="space-y-2">
+            <Label htmlFor="model">Model</Label>
+            <Select value={model} onValueChange={setModel}>
+              <SelectTrigger id="model">
+                <SelectValue placeholder="Select model"/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="gpt-4o-mini">gpt-4o-mini</SelectItem>
+                <SelectItem value="gpt-4o">gpt-4o</SelectItem>
+                <SelectItem value="gpt-4-turbo">gpt-4-turbo</SelectItem>
+                <SelectItem value="gpt-4">gpt-4</SelectItem>
+                <SelectItem value="gpt-3.5-turbo">gpt-3.5-turbo</SelectItem>
+                <SelectItem value="gpt-4o-2024-08-06">gpt-4o-2024-08-06</SelectItem>
+                <SelectItem value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</SelectItem>
+                <SelectItem value="chatgpt-4o-latest">chatgpt-4o-latest</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
-      <div>
-        <label htmlFor="temperature">Temperature:</label>
-        <input
-          type="text"
-          id="temperature"
-          name="temperature"
-          value={localTemperature}
-          onChange={handleTemperatureChange}
-          onBlur={handleTemperatureBlur} // Ensure valid number on exit
-        />
-      </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="maxTokens">Max Tokens</Label>
+              <Input
+                  type="text"
+                  id="maxTokens"
+                  name="maxTokens"
+                  value={maxTokens}
+                  onChange={handleMaxTokensChange}
+              />
+            </div>
 
-      <div>
-        <label htmlFor="promptTemplate">Prompt Template:</label>
-        <textarea
-          type="text"
-          id="promptTemplate"
-          name="promptTemplate"
-          value={promptTemplate}
-          onChange={handlePromptTemplateChange}
-        />
-      </div>
-    </div>
+            <div className="space-y-2">
+              <Label htmlFor="temperature">Temperature</Label>
+              <Input
+                  type="text"
+                  id="temperature"
+                  name="temperature"
+                  value={localTemperature}
+                  onChange={handleTemperatureChange}
+                  onBlur={handleTemperatureBlur}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="promptTemplate" className="flex items-center">
+              <Braces className="mr-2 h-4 w-4"/> Prompt Template
+            </Label>
+            <Textarea
+                id="promptTemplate"
+                className="min-h-40"
+                value={promptTemplate}
+                onChange={handlePromptTemplateChange}
+            />
+          </div>
+        </CardContent>
+      </Card>
   );
 }
 
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [result, setResult] = useState("");
-
-  const [activeTab, setActiveTab] = useState("Mindmapping");
+  const [activeTab, setActiveTab] = useState("mindmapping");
   const [token, setToken] = useState("");
   const [model, setModel] = useState("gpt-4o-mini");
 
   const [maxTokens, setMaxTokens] = useState(
-    localStorage.getItem("maxTokens") || 2000
+      localStorage.getItem("maxTokens") || 2000
   );
 
   const [temperature, setTemperature] = useState(
-    localStorage.getItem("temperature") || 0.7
+      localStorage.getItem("temperature") || 0.7
   );
 
   const [promptTemplate, setPromptTemplate] = useState(
-    localStorage.getItem("promptTemplate") ||
+      localStorage.getItem("promptTemplate") ||
       `Create a mermaid mindmap based on user input like these examples:
 brainstorming mindmap
 mindmap
@@ -244,13 +288,10 @@ mindmap
 Only one root, use free FontAwesome icons, and follow node types "[", "(". No need to use "mermaid", "\`\`\`", or "graph TD". Respond only with code and syntax.`
   );
 
-  useEffect(() => {});
-
   // gpt-3.5-turbo
   async function callOpenAi() {
     setResult("");
 
-    //console.log(temperature);
     let url = "https://api.openai.com/v1/chat/completions";
     let data = {
       model: model,
@@ -290,12 +331,12 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
     let resultString = ""; // Define resultString here to collect all results
 
     while (true) {
-      const { done, value } = await reader.read();
+      const {done, value} = await reader.read();
       if (done) {
         break;
       }
 
-      text += decoder.decode(value, { stream: true });
+      text += decoder.decode(value, {stream: true});
       const lines = text.split("\n");
       text = lines.pop();
 
@@ -307,11 +348,6 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
         }
 
         if (message === "[DONE]") {
-          /*setResult((prev) => {
-            let result = processString(prev);
-            console.log(result);
-            return result;
-          });*/
           return;
         }
 
@@ -321,19 +357,19 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
 
           // Append each line to the resultString
           if (
-            result !== "```" &&
-            result !== "```mermaid" &&
-            !result.includes("mermaid")
+              result !== "```" &&
+              result !== "```mermaid" &&
+              !result.includes("mermaid")
           ) {
             resultString += result;
           }
 
           // If the result contains a newline, update the result state
           if (
-            result.includes("\n") &&
-            result !== "```" &&
-            result !== "```mermaid" &&
-            !result.includes("mermaid")
+              result.includes("\n") &&
+              result !== "```" &&
+              result !== "```mermaid" &&
+              !result.includes("mermaid")
           ) {
             setResult(resultString);
           }
@@ -346,55 +382,64 @@ Only one root, use free FontAwesome icons, and follow node types "[", "(". No ne
       }
     }
 
-    //console.log("before processString");
     // Set the final state after the loop ends if it hasn't been set yet
     if (
-      !resultString.includes("\n") &&
-      result !== "```" &&
-      result !== "```mermaid" &&
-      !result.includes("mermaid")
+        !resultString.includes("\n") &&
+        result !== "```" &&
+        result !== "```mermaid" &&
+        !result.includes("mermaid")
     ) {
       setResult(resultString);
     }
   }
 
   return (
-    <div className="App">
-      <div className="tab-buttons">
-        <button
-          className="tab-button"
-          onClick={() => setActiveTab("Mindmapping")}
-        >
-          Mindmapping
-        </button>
-        <button className="tab-button" onClick={() => setActiveTab("Settings")}>
-          Settings
-        </button>
+      <div className="container mx-auto py-6 px-4">
+        <Card className="shadow-lg">
+          <CardHeader className="bg-primary text-primary-foreground">
+            <CardTitle className="text-xl font-bold">MindMap Generator</CardTitle>
+          </CardHeader>
+          <CardContent className="p-6">
+            <Tabs
+                defaultValue="mindmapping"
+                value={activeTab}
+                onValueChange={setActiveTab}
+                className="w-full"
+            >
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="mindmapping">Mindmapping</TabsTrigger>
+                <TabsTrigger value="settings">Settings</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="mindmapping" className="mt-0">
+                <MindmappingTab
+                    prompt={prompt}
+                    setPrompt={setPrompt}
+                    result={result}
+                    setResult={setResult}
+                    callOpenAi={callOpenAi}
+                    model={model}
+                    promptTemplate={promptTemplate}
+                />
+              </TabsContent>
+
+              <TabsContent value="settings" className="mt-0">
+                <SettingsTab
+                    token={token}
+                    setToken={setToken}
+                    model={model}
+                    setModel={setModel}
+                    promptTemplate={promptTemplate}
+                    setPromptTemplate={setPromptTemplate}
+                    maxTokens={maxTokens}
+                    setMaxTokens={setMaxTokens}
+                    temperature={temperature}
+                    setTemperature={setTemperature}
+                />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
-      {activeTab === "Mindmapping" ? (
-        <MindmappingTab
-          prompt={prompt}
-          setPrompt={setPrompt}
-          result={result}
-          setResult={setResult}
-          callOpenAi={callOpenAi}
-          model={model}
-          promptTemplate={promptTemplate}
-        />
-      ) : (
-        <SettingsTab
-          token={token}
-          setToken={setToken}
-          model={model}
-          setModel={setModel}
-          promptTemplate={promptTemplate}
-          setPromptTemplate={setPromptTemplate}
-          maxTokens={maxTokens}
-          setMaxTokens={setMaxTokens}
-          temperature={temperature}
-          setTemperature={setTemperature}
-        />
-      )}
-    </div>
   );
 }

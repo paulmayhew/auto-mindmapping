@@ -1,0 +1,55 @@
+/* mermaid-styles.css */
+.mermaid-wrapper {
+    background-color: #3e498c;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+}
+
+.mermaid-parent-override {
+    background-color: #3e498c !important;
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.buttonContainer button {
+    background-color: #772a2a; /* Deep Red from your theme */
+    color: #f7f2b7; /* Cream from your theme */
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.buttonContainer button:hover {
+    background-color: #e53e3d; /* Bright Red from your theme */
+}
+
+/* Ensure mermaid diagram has proper background */
+.mermaid {
+    background-color: #3e498c;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+/* This will override any conflicting styles from parent components */
+.mermaid-parent-override .mermaid-wrapper,
+.mermaid-parent-override .buttonContainer,
+.mermaid-parent-override .mermaid {
+    background-color: #3e498c !important;
+}
+
+.mermaid-parent-override .buttonContainer button {
+    background-color: #772a2a !important;
+    color: #f7f2b7 !important;
+}
+
+.mermaid-parent-override .buttonContainer button:hover {
+    background-color: #e53e3d !important;
+}
